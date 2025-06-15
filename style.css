@@ -1,55 +1,69 @@
 body {
-  background-color: #0d0d0d;
-  color: #0f0;
-  font-family: 'Courier New', Courier, monospace;
-  text-align: center;
-  padding: 30px;
-}
+    background-color: #0d0d0d;
+    color: #0f0;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    padding: 30px;
+  }
+  
+  h1, h2 {
+    color: #0ff;
+  }
+  
+  .box {
+    background-color: #1a1a1a;
+    border: 1px solid #0f0;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 400px;
+    border-radius: 10px;
+  }
+  
+  input, button, textarea {
+    width: 90%;
+    max-width: 300px;
+    padding: 10px;
+    margin: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: none;
+    font-family: monospace;
+  }
+  
+  input, textarea {
+    background-color: #222;
+    color: #0f0;
+  }
+  
+  button {
+    background-color: #0f0;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .balance {
+    font-size: 1.5em;
+    margin-top: 20px;
+    color: #0f0;
+  }
+  
+  .message {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: yellow;
+  }
 
-h1, h2 {
-  color: #0ff;
-}
+  #userList {
+    background-color: #1a1a1a;
+    border: 1px solid #0f0;
+    margin-top: 10px;
+    font-size: 0.9em;
+    text-align: left;
+  }
 
-.box {
-  background-color: #1a1a1a;
-  border: 1px solid #0f0;
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 400px;
-  border-radius: 10px;
-}
-
-input, button, textarea {
-  width: 90%;
-  max-width: 300px;
-  padding: 10px;
-  margin: 10px;
-  font-size: 1em;
-  border-radius: 5px;
-  border: none;
-  font-family: monospace;
-}
-
-input, textarea {
-  background-color: #222;
-  color: #0f0;
-}
-
-button {
-  background-color: #0f0;
-  color: #000;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.balance {
-  font-size: 1.5em;
-  margin-top: 20px;
-  color: #0f0;
-}
-
-.message {
-  margin-top: 20px;
-  font-size: 1.2em;
-  color: yellow;
-}
+  #activeUsers {
+    color: #0ff;
+    margin: 10px 0;
+    font-weight: bold;
+  }
