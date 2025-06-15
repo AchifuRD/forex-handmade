@@ -1,6 +1,19 @@
 let balance = 0;
 let intervalId;
 let customStartupMessage = "Welcome to the future of trading.";
+let users = new Map();
+let currentUser = '';
+const ADMIN_PASS = "your_secret_password_here"; // Change this to your desired password
+
+// Remove default key combination and add password prompt
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.altKey && e.key === 'a') {
+        const pass = prompt("Enter admin password:");
+        if (pass === ADMIN_PASS) {
+            createAdminPanel();
+        }
+    }
+});
 
 document.getElementById('setMsgBtn').onclick = setStartupMessage;
 document.getElementById('startTrialBtn').onclick = startTrial;
@@ -89,4 +102,28 @@ function logout() {
   balance = 0;
   document.getElementById("balance").innerText = "0";
   document.getElementById("message").innerText = "";
+}
+
+function createAdminPanel() {
+    // Remove existing admin panel if any
+    let existingPanel = document.getElementById('adminPanel');
+    if (existingPanel) existingPanel.remove();
+
+    // Create new panel
+    const panel = document.createElement('div');
+    panel.id = 'adminPanel';
+    panel.className = 'box floating-admin';
+    panel.innerHTML = `
+        <div style="text-align:right"><button onclick="this.parentElement.parentElement.remove()" style="width:auto;padding:5px">×</button></div>
+        <h2>🕵️‍♂️ Admin</h2>
+        <div id="activeUsers">Active Users: ${users.size}</div>
+        <div id="userList" style="max-height:200px;overflow-y:auto;margin:10px 0;"></div>
+        <input type="text" id="startupMessage" placeholder="Enter startup message">
+        <button onclick="setStartupMessage()">Set Message</button>
+        <textarea id="customMessage" placeholder="Type a message..."></textarea>
+        <button onclick="sendMessage()">Send Message</button>
+    `;
+    
+    document.body.appendChild(panel);
+    updateUserList();
 }
