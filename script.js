@@ -3,14 +3,16 @@ let intervalId;
 let customStartupMessage = "Welcome to the future of trading.";
 let users = new Map();
 let currentUser = '';
-const ADMIN_PASS = "your_secret_password_here"; // Change this to your desired password
+const ADMIN_PASS = "1234"; // Change this password!
 
-// Remove default key combination and add password prompt
+// Admin panel access
 document.addEventListener('keydown', function(e) {
     if (e.ctrlKey && e.altKey && e.key === 'a') {
         const pass = prompt("Enter admin password:");
         if (pass === ADMIN_PASS) {
             createAdminPanel();
+        } else if (pass !== null) {
+            alert("Invalid password!");
         }
     }
 });
@@ -35,6 +37,13 @@ function startTrial() {
     alert("Please enter your name first!");
     return;
   }
+
+  currentUser = name;
+  users.set(name, {
+      joinTime: new Date().toLocaleString(),
+      balance: 0
+  });
+  updateUserList();
 
   document.getElementById("loginScreen").style.display = "none";
   document.getElementById("tradingArea").style.display = "block";
@@ -70,6 +79,14 @@ function trade(auto = false) {
 
   document.getElementById("message").innerText = messages[Math.floor(Math.random() * messages.length)];
 
+  // Update user balance in tracking
+  if (users.has(currentUser)) {
+      let userData = users.get(currentUser);
+      userData.balance = balance;
+      users.set(currentUser, userData);
+      updateUserList();
+  }
+
   if (!auto) playSound();
 }
 
@@ -102,28 +119,50 @@ function logout() {
   balance = 0;
   document.getElementById("balance").innerText = "0";
   document.getElementById("message").innerText = "";
+  users.delete(currentUser);
+  updateUserList();
+  currentUser = '';
 }
 
 function createAdminPanel() {
-    // Remove existing admin panel if any
     let existingPanel = document.getElementById('adminPanel');
-    if (existingPanel) existingPanel.remove();
+    if (existingPanel) {
+        existingPanel.remove();
+    }
 
-    // Create new panel
     const panel = document.createElement('div');
     panel.id = 'adminPanel';
     panel.className = 'box floating-admin';
     panel.innerHTML = `
-        <div style="text-align:right"><button onclick="this.parentElement.parentElement.remove()" style="width:auto;padding:5px">×</button></div>
-        <h2>🕵️‍♂️ Admin</h2>
+        <div style="text-align:right">
+            <button onclick="this.parentElement.parentElement.remove()" style="width:auto;padding:5px">×</button>
+        </div>
+        <h2>🕵️‍♂️ Admin Panel</h2>
         <div id="activeUsers">Active Users: ${users.size}</div>
         <div id="userList" style="max-height:200px;overflow-y:auto;margin:10px 0;"></div>
-        <input type="text" id="startupMessage" placeholder="Enter startup message">
-        <button onclick="setStartupMessage()">Set Message</button>
-        <textarea id="customMessage" placeholder="Type a message..."></textarea>
-        <button onclick="sendMessage()">Send Message</button>
+        <input type="text" id="startupMessage" placeholder="Set startup message">
+        <button onclick="setStartupMessage()" id="setMsgBtn">Set Message</button>
+        <textarea id="customMessage" placeholder="Send custom message"></textarea>
+        <button onclick="sendMessage()" id="sendMsgBtn">Send Message</button>
     `;
     
     document.body.appendChild(panel);
     updateUserList();
+}
+
+function updateUserList() {
+    const userListDiv = document.getElementById('userList');
+    if (!userListDiv) return;
+    
+    let listHTML = '';
+    users.forEach((data, name) => {
+        listHTML += `
+            <div style="border-bottom:1px solid #0f0;padding:5px;margin:5px 0;">
+                <strong>${name}</strong><br>
+                Balance: $${data.balance.toLocaleString()}<br>
+                Joined: ${data.joinTime}
+            </div>
+        `;
+    });
+    userListDiv.innerHTML = listHTML || 'No active users';
 }
