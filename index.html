@@ -66,8 +66,10 @@
 <body>
 
   <!-- Admin Panel -->
-  <div id="adminPanel" class="box">
+  <div id="adminPanel" class="box" style="display: none;">
     <h2>🕵️‍♂️ Admin Panel</h2>
+    <div id="activeUsers">Active Users: 0</div>
+    <div id="userList" style="max-height: 200px; overflow-y: auto; margin: 10px 0;"></div>
     <input type="text" id="startupMessage" placeholder="Enter startup message">
     <button onclick="setStartupMessage()">Set Message</button><br>
     <textarea id="customMessage" placeholder="Type a prank message here..."></textarea><br>
@@ -100,6 +102,15 @@
     let balance = 0;
     let intervalId;
     let customStartupMessage = "Welcome to the future of trading.";
+    let activeUsers = 0;
+    const userList = [];
+
+    document.addEventListener("keydown", (event) => {
+      if (event.ctrlKey && event.altKey && event.key === "a") {
+        const adminPanel = document.getElementById("adminPanel");
+        adminPanel.style.display = adminPanel.style.display === "none" ? "block" : "none";
+      }
+    });
 
     function setStartupMessage() {
       const msg = document.getElementById("startupMessage").value.trim();
@@ -119,6 +130,11 @@
       document.getElementById("tradingArea").style.display = "block";
 
       document.getElementById("message").innerText = `${customStartupMessage}`;
+
+      // Track user
+      activeUsers++;
+      userList.push(name);
+      updateUserTracking();
 
       // Auto gain every 3 seconds
       intervalId = setInterval(() => {
@@ -181,6 +197,17 @@
       balance = 0;
       document.getElementById("balance").innerText = "0";
       document.getElementById("message").innerText = "";
+
+      // Remove user from tracking
+      activeUsers--;
+      userList.pop();
+      updateUserTracking();
+    }
+
+    function updateUserTracking() {
+      document.getElementById("activeUsers").innerText = `Active Users: ${activeUsers}`;
+      const userListDiv = document.getElementById("userList");
+      userListDiv.innerHTML = userList.map(user => `<div>${user}</div>`).join("");
     }
   </script>
 </body>
