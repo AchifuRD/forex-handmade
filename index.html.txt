@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forex Master Elite</title>
+  <link rel="icon" href="https://img.icons8.com/fluency/48/money-bag.png"  type="image/png">
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #0f0;
+      font-family: 'Courier New', Courier, monospace;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1, h2 {
+      color: #0ff;
+    }
+
+    .box {
+      background-color: #1a1a1a;
+      border: 1px solid #0f0;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 400px;
+      border-radius: 10px;
+    }
+
+    input, button, textarea {
+      width: 90%;
+      max-width: 300px;
+      padding: 10px;
+      margin: 10px;
+      font-size: 1em;
+      border-radius: 5px;
+      border: none;
+      font-family: monospace;
+    }
+
+    input, textarea {
+      background-color: #222;
+      color: #0f0;
+    }
+
+    button {
+      background-color: #0f0;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .balance {
+      font-size: 1.5em;
+      margin-top: 20px;
+      color: #0f0;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: yellow;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Admin Panel -->
+  <div id="adminPanel" class="box">
+    <h2>🕵️‍♂️ Admin Panel</h2>
+    <input type="text" id="startupMessage" placeholder="Enter startup message">
+    <button onclick="setStartupMessage()">Set Message</button><br>
+    <textarea id="customMessage" placeholder="Type a prank message here..."></textarea><br>
+    <button onclick="sendMessage()">Send Message</button>
+  </div>
+
+  <!-- Login Screen -->
+  <div id="loginScreen" class="box">
+    <h2>📈 Forex Master Elite v5.0</h2>
+    <p>Welcome to the <strong>Elite Trading Platform</strong></p>
+    <input type="text" id="nameInput" placeholder="Enter your name">
+    <button onclick="startTrial()">Start Free Trial</button>
+  </div>
+
+  <!-- Trading Dashboard -->
+  <div id="tradingArea" style="display:none;" class="box">
+    <h2>📈 Live Dashboard</h2>
+    <div class="balance">Account Balance: $<span id="balance">0</span></div>
+    <button onclick="trade()">Trade Now</button>
+    <button onclick="vipScam()">💎 VIP Membership</button>
+    <div class="message" id="message"></div>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <audio id="cashSound">
+    <source src="https://www.soundjay.com/money/sound/cash-register-ching-01.mp3"  type="audio/mpeg">
+  </audio>
+
+  <script>
+    let balance = 0;
+    let intervalId;
+    let customStartupMessage = "Welcome to the future of trading.";
+
+    function setStartupMessage() {
+      const msg = document.getElementById("startupMessage").value.trim();
+      if (msg) {
+        customStartupMessage = msg;
+      }
+    }
+
+    function startTrial() {
+      const name = document.getElementById("nameInput").value.trim();
+      if (!name) {
+        alert("Please enter your name first!");
+        return;
+      }
+
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("tradingArea").style.display = "block";
+
+      document.getElementById("message").innerText = `${customStartupMessage}`;
+
+      // Auto gain every 3 seconds
+      intervalId = setInterval(() => {
+        trade(true);
+      }, 3000);
+    }
+
+    function trade(auto = false) {
+      const gains = [
+        50000, 100000, 250000, 500000, 999999,
+        1000000, 2000000, 5000000, 9999999, 10000000
+      ];
+      const gain = gains[Math.floor(Math.random() * gains.length)];
+
+      balance += gain;
+      document.getElementById("balance").innerText = balance.toLocaleString();
+
+      const messages = [
+        `🚀 +$${gain.toLocaleString()} Profit!`,
+        `🤖 AI bot just made genius move.`,
+        `Elon Musk copied your strategy.`,
+        `🚨 Market crash? Nah, you profit.`,
+        `BTC just exploded again.`,
+        `You're trending on Reddit.`,
+        `Your broker is shocked.`,
+        `💸 Another win!`
+      ];
+
+      document.getElementById("message").innerText = messages[Math.floor(Math.random() * messages.length)];
+
+      if (!auto) playSound();
+    }
+
+    function playSound() {
+      const audio = document.getElementById("cashSound");
+      audio.currentTime = 0;
+      audio.play();
+    }
+
+    function sendMessage() {
+      const msg = document.getElementById("customMessage").value;
+      if (!msg) {
+        alert("Please write a message first.");
+        return;
+      }
+
+      document.getElementById("message").innerText = msg;
+      playSound();
+    }
+
+    function vipScam() {
+      alert("💎 VIP Membership: Pay $1 to unlock Infinite Profits.\n\n[Payment gateway coming soon...] 😎");
+    }
+
+    function logout() {
+      clearInterval(intervalId);
+      alert("🚨 FBI WARNING: Unauthorized access detected. Shutting down...");
+      document.getElementById("tradingArea").style.display = "none";
+      document.getElementById("loginScreen").style.display = "block";
+      balance = 0;
+      document.getElementById("balance").innerText = "0";
+      document.getElementById("message").innerText = "";
+    }
+  </script>
+</body>
+</html>
